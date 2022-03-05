@@ -1,11 +1,13 @@
 package com.example.kafkatest.model
 
-import kotlinx.serialization.Serializable
+import com.fasterxml.jackson.annotation.JsonProperty
 
-@Serializable
 data class Message(
+    @JsonProperty("author")
     var author: String?,
+    @JsonProperty("content")
     var content: String?,
+    @JsonProperty("timestamp")
     var timestamp: String?,
 ) {
     override fun toString(): String {
