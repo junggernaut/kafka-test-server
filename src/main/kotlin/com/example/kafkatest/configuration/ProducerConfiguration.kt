@@ -1,6 +1,5 @@
 package com.example.kafkatest.configuration
 
-import com.example.kafkatest.constans.KafkaConstants
 import com.example.kafkatest.model.Message
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.serialization.StringSerializer
@@ -18,7 +17,7 @@ import org.springframework.kafka.support.serializer.JsonSerializer
 @Configuration
 class ProducerConfiguration(){
 
-    @Value("\${spring.kafka.producer.bootstrap-servers}")
+    @Value("\${spring.kafka.bootstrap-servers}")
     lateinit var bootstrapServer: String
 
     @Bean
