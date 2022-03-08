@@ -1,11 +1,9 @@
 package com.example.kafkatest.controller
 
 import com.example.kafkatest.model.Message
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.kafka.core.KafkaTemplate
+import org.springframework.messaging.handler.annotation.DestinationVariable
 import org.springframework.messaging.handler.annotation.MessageMapping
-import org.springframework.messaging.handler.annotation.Payload
-import org.springframework.messaging.handler.annotation.SendTo
 import org.springframework.web.bind.annotation.*
 import java.time.LocalDateTime
 
@@ -17,20 +15,21 @@ class ChatController(
     private var kafkaTemplate: KafkaTemplate<String, Message>
 ) {
 
-    @PostMapping(value = ["/publish"])
-    fun sendMessage(@RequestBody message: Message) {
+    @MessageMapping("/{chatRoomId}")
+    fun getMessage(@RequestBody message: Message, @DestinationVariable chatRoomId: String) {
         println(message)
         message.timestamp = LocalDateTime.now().toString()
         try {
-            kafkaTemplate.send("kafka-chat", message).get()
+            kafkaTemplate.send(chatRoomId, message).get()
         } catch (e: Exception) {
             throw RuntimeException(e)
         }
     }
 
-    @MessageMapping("/sendMessage")
-    @SendTo("/topic/group")
-    fun broadcastGroupMessage(@Payload message: Message): Message {
-        return message
-    }
+//    @MessageMapping("/queue/test")
+//    @SendTo("/topic/group")
+//    fun broadcastGroupMessage(@Payload message: Message): Message {
+//        return message
+//    }
+
 }

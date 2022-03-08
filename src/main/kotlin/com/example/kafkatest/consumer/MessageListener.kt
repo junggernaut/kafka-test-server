@@ -14,13 +14,13 @@ import org.springframework.stereotype.Component
 class MessageListener(
     private var template: SimpMessagingTemplate
 ) {
-
     @KafkaListener(topics = ["kafka-chat"], groupId = "foo")
     fun listen(message: Message) {
+        println("check\n")
         try {
             template.convertAndSend("/topic/group", message)
         } catch (e: Exception) {
         throw RuntimeException(e)
-    }
+        }
     }
 }
